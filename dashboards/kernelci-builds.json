@@ -1,4 +1,52 @@
-
+{
+  "__inputs": [
+    {
+      "name": "DS_GOOGLE_BIGQUERY",
+      "label": "Google BigQuery",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "doitintl-bigquery-datasource",
+      "pluginName": "Google BigQuery"
+    }
+  ],
+  "__requires": [
+    {
+      "type": "datasource",
+      "id": "doitintl-bigquery-datasource",
+      "name": "Google BigQuery",
+      "version": "1.0.2"
+    },
+    {
+      "type": "panel",
+      "id": "gauge",
+      "name": "Gauge",
+      "version": ""
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "5.4.3"
+    },
+    {
+      "type": "panel",
+      "id": "graph",
+      "name": "Graph",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "singlestat",
+      "name": "Singlestat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    }
+  ],
   "annotations": {
     "list": [
       {
@@ -15,7 +63,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 1,
+  "id": null,
   "links": [],
   "panels": [
     {
@@ -27,7 +75,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "Google BigQuery",
+      "datasource": "${DS_GOOGLE_BIGQUERY}",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -126,7 +174,7 @@
       "valueName": "avg"
     },
     {
-      "datasource": "Google BigQuery",
+      "datasource": "${DS_GOOGLE_BIGQUERY}",
       "gridPos": {
         "h": 6,
         "w": 11,
@@ -207,7 +255,7 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Google BigQuery",
+      "datasource": "${DS_GOOGLE_BIGQUERY}",
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -318,7 +366,7 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "Google BigQuery",
+      "datasource": "${DS_GOOGLE_BIGQUERY}",
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -426,7 +474,7 @@
     },
     {
       "columns": [],
-      "datasource": "Google BigQuery",
+      "datasource": "${DS_GOOGLE_BIGQUERY}",
       "fontSize": "100%",
       "gridPos": {
         "h": 15,
@@ -597,3 +645,4 @@
   "title": "Builds",
   "uid": "cLgihIoZz",
   "version": 31
+}
