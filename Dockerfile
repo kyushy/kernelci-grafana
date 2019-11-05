@@ -1,4 +1,4 @@
-FROM grafana/grafana:5.4.3
+FROM grafana/grafana
 
 ADD ./provisioning /etc/grafana/provisioning
 ADD ./grafana.ini /etc/grafana/grafana.ini
