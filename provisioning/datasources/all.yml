@@ -1,7 +1,7 @@
 apiVersion: 1
 
 datasources:
-- name: Google BigQuery
+- name: DS_GOOGLE_BIGQUERY
   type: doitintl-bigquery-datasource
   access: proxy
   isDefault: true
