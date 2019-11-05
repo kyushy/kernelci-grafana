@@ -1,7 +1,7 @@
 {
   "__inputs": [
     {
-      "name": "Google BigQuery",
+      "name": "DS_GOOGLE_BIGQUERY",
       "label": "Google BigQuery",
       "description": "",
       "type": "datasource",
