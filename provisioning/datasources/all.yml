@@ -10,10 +10,10 @@ datasources:
     clientEmail: <Service Account Email>
     defaultProject: kernelci
     tokenUri: https://oauth2.googleapis.com/token
-    secureJsonData:
+  secureJsonData:
     privateKey: |
       -----BEGIN PRIVATE KEY-----
       <Content of the Private Key>
       -----END PRIVATE KEY-----
-    version: 2
+  version: 2
   readOnly: false
