@@ -26,7 +26,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "6.4.3"
+      "version": "6.4.2"
     },
     {
       "type": "panel",
@@ -64,6 +64,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
+  "iteration": 1575471183329,
   "links": [],
   "panels": [
     {
@@ -75,7 +76,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "DS_GOOGLE_BIGQUERY",
+      "datasource": "${DS_GOOGLE_BIGQUERY}",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -134,7 +135,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT COUNT (revision_origin_id) FROM `kernelci.kernelci01.builds` \n",
+          "rawSql": "SELECT COUNT (revision_origin_id) \nFROM `kernelci.kernelci01.builds` \nWHERE architecture LIKE ${arch_search} AND origin LIKE ${origin_search} AND revision_origin_id LIKE ${rev_search} AND UNIX_MILLIS(start_time) BETWEEN ${__from} AND ${__to}\n",
           "refId": "A",
           "select": [
             [
@@ -174,7 +175,7 @@
       "valueName": "avg"
     },
     {
-      "datasource": "DS_GOOGLE_BIGQUERY",
+      "datasource": "${DS_GOOGLE_BIGQUERY}",
       "gridPos": {
         "h": 6,
         "w": 11,
@@ -221,7 +222,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT COUNT (revision_origin_id) / (SELECT COUNT (revision_origin_id) FROM `kernelci.kernelci01.builds`) FROM `kernelci.kernelci01.builds` WHERE valid=true \n",
+          "rawSql": "SELECT COUNT (revision_origin_id) / \n  (SELECT COUNT (revision_origin_id) \n  FROM `kernelci.kernelci01.builds` \n  WHERE architecture LIKE ${arch_search} AND origin LIKE ${origin_search} AND UNIX_MILLIS(start_time) BETWEEN ${__from} AND ${__to} ) \nFROM `kernelci.kernelci01.builds` \nWHERE valid=true AND architecture LIKE ${arch_search} AND origin LIKE ${origin_search} AND revision_origin_id LIKE ${rev_search} AND UNIX_MILLIS(start_time) BETWEEN ${__from} AND ${__to}\n",
           "refId": "A",
           "select": [
             [
@@ -255,7 +256,7 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "DS_GOOGLE_BIGQUERY",
+      "datasource": "${DS_GOOGLE_BIGQUERY}",
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -294,7 +295,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "#standardSQL\r\nSELECT\r\n TIMESTAMP_SECONDS(DIV(UNIX_SECONDS(`start_time`), 10800) * 10800),\r\n  CAST (`architecture`AS String ) AS metric,\r\n  count(`architecture`) AS architecture\r\nFROM `kernelci.kernelci01.builds`\r\nWHERE\r\n  `start_time` BETWEEN TIMESTAMP_MILLIS (1563028960953) AND TIMESTAMP_MILLIS (1570804960953) AND\r\n  start_time > '2019-08-01 00:00:00.000'\r\nGROUP BY 1,2\r\nORDER BY 1,2 LIMIT 797",
+          "rawSql": "#standardSQL\r\nSELECT\r\n TIMESTAMP_SECONDS(DIV(UNIX_SECONDS(`start_time`), 10800) * 10800),\r\n  CAST (`architecture`AS String ) AS metric,\r\n  count(`architecture`) AS architecture\r\nFROM `kernelci.kernelci01.builds`\r\nWHERE\r\n  UNIX_MILLIS(`start_time`) BETWEEN ${__from} AND ${__to}\r\nAND origin LIKE ${origin_search}\r\nAND revision_origin_id LIKE ${rev_search}\r\nGROUP BY 1,2\r\nORDER BY 1,2 LIMIT 797",
           "refId": "A",
           "select": [
             [
@@ -340,6 +341,7 @@
       },
       "yaxes": [
         {
+          "decimals": null,
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -366,7 +368,7 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "DS_GOOGLE_BIGQUERY",
+      "datasource": "${DS_GOOGLE_BIGQUERY}",
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -405,7 +407,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "#standardSQL\r\nSELECT\r\n TIMESTAMP_SECONDS(DIV(UNIX_SECONDS(`start_time`), 10800) * 10800),\r\n  CAST (`revision_origin_id`AS String ) AS metric,\r\n  count(`revision_origin_id`) AS architecture\r\nFROM `kernelci.kernelci01.builds`\r\nGROUP BY 1,2\r\nORDER BY 1,2 LIMIT 797",
+          "rawSql": "#standardSQL\r\nSELECT\r\n TIMESTAMP_SECONDS(DIV(UNIX_SECONDS(`start_time`), 10800) * 10800),\r\n  CAST (`revision_origin_id`AS String ) AS metric,\r\n  count(`revision_origin_id`) AS architecture\r\nFROM `kernelci.kernelci01.builds`\r\nWHERE architecture LIKE ${arch_search} AND UNIX_MILLIS(`start_time`) BETWEEN ${__from} AND ${__to}\r\nAND origin LIKE ${origin_search}\r\nGROUP BY 1,2\r\nORDER BY 1,2 LIMIT 797",
           "refId": "A",
           "select": [
             [
@@ -474,8 +476,8 @@
     },
     {
       "columns": [],
-      "datasource": "DS_GOOGLE_BIGQUERY",
-      "fontSize": "100%",
+      "datasource": "${DS_GOOGLE_BIGQUERY}",
+      "fontSize": "90%",
       "gridPos": {
         "h": 15,
         "w": 24,
@@ -496,9 +498,10 @@
           "alias": "Revisions",
           "dateFormat": "YYYY-MM-DD HH:mm:ss",
           "link": true,
-          "linkTooltip": "${__cell_5}",
-          "linkUrl": "/d/BI2us1oZk/tests?build=${__cell_5}&rev=${__cell_0}",
+          "linkTooltip": "",
+          "linkUrl": "/d/BI2us1oZk/tests?var-rev=${__cell_0}&var-arch_search=${__cell_2}",
           "pattern": "revision_origin_id",
+          "preserveFormat": false,
           "type": "string"
         },
         {
@@ -578,6 +581,38 @@
           "thresholds": [],
           "type": "hidden",
           "unit": "short"
+        },
+        {
+          "alias": "Architecture",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "architecture",
+          "thresholds": [],
+          "type": "string",
+          "unit": "short"
+        },
+        {
+          "alias": "Origin",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "origin",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
         }
       ],
       "targets": [
@@ -586,7 +621,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT revision_origin_id, MAX(start_time), COUNT(revision_origin_id), COUNT(valid), COUNT(revision_origin_id) - COUNT(valid), ARRAY_AGG(origin_id LIMIT 1)[OFFSET(0)]  FROM `kernelci.kernelci01.builds` GROUP BY revision_origin_id ",
+          "rawSql": "SELECT revision_origin_id, origin, architecture, MAX(start_time), COUNT(revision_origin_id), COUNT(valid), COUNT(origin_id) - COUNT(valid), ARRAY_AGG(origin_id LIMIT 150)[OFFSET(0)]  \nFROM `kernelci.kernelci01.builds` \nWHERE architecture LIKE ${arch_search} AND origin LIKE ${origin_search} AND revision_origin_id LIKE ${rev_search} AND UNIX_MILLIS(start_time) BETWEEN ${__from} AND ${__to}\nGROUP BY revision_origin_id, architecture, origin ",
           "refId": "A",
           "select": [
             [
@@ -621,10 +656,77 @@
   "style": "dark",
   "tags": [],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "allValue": "\"%\"",
+        "current": {},
+        "datasource": "${DS_GOOGLE_BIGQUERY}",
+        "definition": "SELECT architecture FROM kernelci.kernelci01.builds",
+        "hide": 0,
+        "includeAll": true,
+        "label": "arch",
+        "multi": false,
+        "name": "arch_search",
+        "options": [],
+        "query": "SELECT architecture FROM kernelci.kernelci01.builds",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": "\"%\"",
+        "current": {},
+        "datasource": "${DS_GOOGLE_BIGQUERY}",
+        "definition": "SELECT origin FROM kernelci.kernelci01.builds",
+        "hide": 0,
+        "includeAll": true,
+        "label": "origin",
+        "multi": false,
+        "name": "origin_search",
+        "options": [],
+        "query": "SELECT origin FROM kernelci.kernelci01.builds",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": "\"%\"",
+        "current": {},
+        "datasource": "${DS_GOOGLE_BIGQUERY}",
+        "definition": "SELECT DISTINCT revision_origin_id FROM kernelci.kernelci01.builds WHERE architecture LIKE ${arch_search} AND origin_id LIKE ${origin_search} AND UNIX_MILLIS(start_time) BETWEEN ${__from} AND ${__to}",
+        "hide": 0,
+        "includeAll": true,
+        "label": "rev",
+        "multi": false,
+        "name": "rev_search",
+        "options": [],
+        "query": "SELECT DISTINCT revision_origin_id FROM kernelci.kernelci01.builds WHERE architecture LIKE ${arch_search} AND origin_id LIKE ${origin_search} AND UNIX_MILLIS(start_time) BETWEEN ${__from} AND ${__to}",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-1y",
     "to": "now"
   },
   "timepicker": {
@@ -644,5 +746,5 @@
   "timezone": "",
   "title": "Builds",
   "uid": "cLgihIoZz",
-  "version": 31
+  "version": 63
 }
