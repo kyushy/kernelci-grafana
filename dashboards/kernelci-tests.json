@@ -27,7 +27,7 @@
       "type": "datasource",
       "id": "doitintl-bigquery-datasource",
       "name": "Google BigQuery",
-      "version": "1.0.2"
+      "version": "1.0.4"
     },
     {
       "type": "panel",
@@ -77,7 +77,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1575471277366,
+  "iteration": 1579770518317,
   "links": [
     {
       "icon": "external link",
@@ -168,6 +168,10 @@
             {
               "text": "<font color=\"green\">SUCCEED</font>",
               "value": "true"
+            },
+            {
+              "text": "<font color=\"red\">FAILED</font>",
+              "value": "false"
             }
           ]
         },
@@ -186,15 +190,54 @@
           "thresholds": [],
           "type": "number",
           "unit": "s"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "log_url",
+          "thresholds": [],
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "link": true,
+          "linkTargetBlank": true,
+          "linkTooltip": "view logs",
+          "linkUrl": "${__cell_6:raw}",
+          "mappingType": 1,
+          "pattern": "origin_id",
+          "thresholds": [],
+          "type": "string",
+          "unit": "short"
         }
       ],
       "targets": [
         {
           "format": "table",
           "group": [],
+          "location": "US",
           "metricColumn": "none",
+          "orderByCol": "1",
+          "orderBySort": "1",
           "rawQuery": true,
-          "rawSql": "SELECT DISTINCT\n  origin_id,\n  description,\n  architecture,\n  compiler,\n  duration,\n  valid\nFROM\n  kernelci.kernelci01.builds\nWHERE\n  revision_origin_id = '${rev}'\nAND architecture LIKE ${arch_search}\nAND compiler LIKE ${compiler_search}\n",
+          "rawSql": "SELECT DISTINCT\n  origin_id,\n  description,\n  architecture,\n  compiler,\n  duration,\n  valid,\n  log_url\nFROM\n  kernelci.kernelci01.builds\nWHERE\n  revision_origin_id = '${rev}'\nAND architecture LIKE ${arch_search}\nAND (compiler LIKE ${compiler_search})\n",
           "refId": "A",
           "select": [
             [
@@ -700,9 +743,12 @@
         {
           "format": "table",
           "group": [],
+          "location": "US",
           "metricColumn": "none",
+          "orderByCol": "1",
+          "orderBySort": "1",
           "rawQuery": true,
-          "rawSql": "SELECT start_time, description, status FROM `kernelci.kernelci01.tests` WHERE build_origin_id='${build}' LIMIT 1000 \n",
+          "rawSql": "SELECT start_time, description, path, status FROM `kernelci.kernelci01.tests` WHERE build_origin_id='${build}' AND status LIKE ${status_search} LIMIT 1000\n",
           "refId": "A",
           "select": [
             [
@@ -779,7 +825,7 @@
         "useTags": false
       },
       {
-        "allValue": "\"%\"",
+        "allValue": "\"%\" OR compiler IS NULL",
         "current": {},
         "datasource": "${DS_GOOGLE_BIGQUERY}",
         "definition": "SELECT compiler FROM kernelci.kernelci01.builds WHERE revision_origin_id = '${rev}'",
@@ -804,14 +850,14 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_GOOGLE_BIGQUERY}",
-        "definition": "SELECT  DISTINCT origin_id FROM   kernelci.kernelci01.builds WHERE   revision_origin_id = '${rev}' AND architecture LIKE ${arch_search} AND compiler LIKE ${compiler_search}",
+        "definition": "SELECT origin_id FROM   kernelci.kernelci01.builds WHERE   revision_origin_id = '${rev}' AND architecture LIKE ${arch_search} AND (compiler LIKE ${compiler_search})",
         "hide": 0,
         "includeAll": false,
         "label": "",
         "multi": false,
         "name": "build",
         "options": [],
-        "query": "SELECT  DISTINCT origin_id FROM   kernelci.kernelci01.builds WHERE   revision_origin_id = '${rev}' AND architecture LIKE ${arch_search} AND compiler LIKE ${compiler_search}",
+        "query": "SELECT origin_id FROM   kernelci.kernelci01.builds WHERE   revision_origin_id = '${rev}' AND architecture LIKE ${arch_search} AND (compiler LIKE ${compiler_search})",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -821,6 +867,49 @@
         "tagsQuery": "",
         "type": "query",
         "useTags": false
+      },
+      {
+        "allValue": "\"%\"",
+        "current": {
+          "tags": [],
+          "text": "FAIL",
+          "value": "FAIL"
+        },
+        "hide": 0,
+        "includeAll": true,
+        "label": "test status",
+        "multi": false,
+        "name": "status_search",
+        "options": [
+          {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "PASS",
+            "value": "PASS"
+          },
+          {
+            "selected": true,
+            "text": "FAIL",
+            "value": "FAIL"
+          },
+          {
+            "selected": false,
+            "text": "SKIP",
+            "value": "SKIP"
+          },
+          {
+            "selected": false,
+            "text": "ERROR",
+            "value": "ERROR"
+          }
+        ],
+        "query": "PASS,FAIL,SKIP,ERROR",
+        "skipUrlSync": false,
+        "type": "custom"
       }
     ]
   },
@@ -845,5 +934,5 @@
   "timezone": "",
   "title": "Tests",
   "uid": "BI2us1oZk",
-  "version": 80
+  "version": 94
 }
