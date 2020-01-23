@@ -14,7 +14,7 @@
       "type": "datasource",
       "id": "doitintl-bigquery-datasource",
       "name": "Google BigQuery",
-      "version": "1.0.2"
+      "version": "1.0.4"
     },
     {
       "type": "panel",
@@ -64,7 +64,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1575471183329,
+  "iteration": 1579770210492,
   "links": [],
   "panels": [
     {
@@ -293,7 +293,10 @@
         {
           "format": "time_series",
           "group": [],
+          "location": "US",
           "metricColumn": "none",
+          "orderByCol": "1",
+          "orderBySort": "1",
           "rawQuery": true,
           "rawSql": "#standardSQL\r\nSELECT\r\n TIMESTAMP_SECONDS(DIV(UNIX_SECONDS(`start_time`), 10800) * 10800),\r\n  CAST (`architecture`AS String ) AS metric,\r\n  count(`architecture`) AS architecture\r\nFROM `kernelci.kernelci01.builds`\r\nWHERE\r\n  UNIX_MILLIS(`start_time`) BETWEEN ${__from} AND ${__to}\r\nAND origin LIKE ${origin_search}\r\nAND revision_origin_id LIKE ${rev_search}\r\nGROUP BY 1,2\r\nORDER BY 1,2 LIMIT 797",
           "refId": "A",
@@ -490,8 +493,8 @@
       "pageSize": 15,
       "showHeader": true,
       "sort": {
-        "col": null,
-        "desc": false
+        "col": 1,
+        "desc": true
       },
       "styles": [
         {
@@ -619,9 +622,12 @@
         {
           "format": "table",
           "group": [],
+          "location": "US",
           "metricColumn": "none",
+          "orderByCol": "1",
+          "orderBySort": "1",
           "rawQuery": true,
-          "rawSql": "SELECT revision_origin_id, origin, architecture, MAX(start_time), COUNT(revision_origin_id), COUNT(valid), COUNT(origin_id) - COUNT(valid), ARRAY_AGG(origin_id LIMIT 150)[OFFSET(0)]  \nFROM `kernelci.kernelci01.builds` \nWHERE architecture LIKE ${arch_search} AND origin LIKE ${origin_search} AND revision_origin_id LIKE ${rev_search} AND UNIX_MILLIS(start_time) BETWEEN ${__from} AND ${__to}\nGROUP BY revision_origin_id, architecture, origin ",
+          "rawSql": "SELECT revision_origin_id, origin, architecture, MAX(start_time), COUNT(valid), COUNT(CASE WHEN valid THEN 1 END), COUNT(CASE WHEN NOT valid THEN 1 END), ARRAY_AGG(origin_id LIMIT 150)[OFFSET(0)]  \nFROM `kernelci.kernelci01.builds` \nWHERE architecture LIKE ${arch_search} AND origin LIKE ${origin_search} AND revision_origin_id LIKE ${rev_search} AND UNIX_MILLIS(start_time) BETWEEN ${__from} AND ${__to}\nGROUP BY revision_origin_id, architecture, origin ",
           "refId": "A",
           "select": [
             [
@@ -652,6 +658,7 @@
       "type": "table"
     }
   ],
+  "refresh": false,
   "schemaVersion": 20,
   "style": "dark",
   "tags": [],
@@ -746,5 +753,5 @@
   "timezone": "",
   "title": "Builds",
   "uid": "cLgihIoZz",
-  "version": 63
+  "version": 72
 }
