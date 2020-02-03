@@ -29,5 +29,5 @@ Go to http://your-container-url:3000/admin/orgs and add a new organisation `kern
 https://github.com/rocker-org/rocker/wiki/How-to-save-data
 #### Restore
 If your image is saved on dockerhub  
-`docker pull username/imagename`
+`docker pull username/imagename`  
 If your image is saved on your machine with docker commit, just run the image with the new name used for docker commit
