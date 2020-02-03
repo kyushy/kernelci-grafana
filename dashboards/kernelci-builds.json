@@ -71,7 +71,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1580739140206,
+  "iteration": 1580740258046,
   "links": [],
   "panels": [
     {
@@ -510,7 +510,7 @@
       "showHeader": true,
       "sort": {
         "col": 1,
-        "desc": true
+        "desc": false
       },
       "styles": [
         {
@@ -681,72 +681,6 @@
   "templating": {
     "list": [
       {
-        "allValue": "\"%\"",
-        "current": {},
-        "datasource": "${DS_GOOGLE_BIGQUERY}",
-        "definition": "SELECT architecture FROM kernelci.kernelci01.builds",
-        "hide": 0,
-        "includeAll": true,
-        "label": "arch",
-        "multi": false,
-        "name": "arch_search",
-        "options": [],
-        "query": "SELECT architecture FROM kernelci.kernelci01.builds",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "allValue": "\"%\"",
-        "current": {},
-        "datasource": "${DS_GOOGLE_BIGQUERY}",
-        "definition": "SELECT origin FROM kernelci.kernelci01.builds",
-        "hide": 0,
-        "includeAll": true,
-        "label": "origin",
-        "multi": false,
-        "name": "origin_search",
-        "options": [],
-        "query": "SELECT origin FROM kernelci.kernelci01.builds",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "allValue": "\"%\"",
-        "current": {},
-        "datasource": "${DS_GOOGLE_BIGQUERY}",
-        "definition": "SELECT DISTINCT revision_origin_id FROM kernelci.kernelci01.builds WHERE architecture LIKE ${arch_search} AND origin_id LIKE ${origin_search} AND UNIX_MILLIS(start_time) BETWEEN ${__from} AND ${__to}",
-        "hide": 0,
-        "includeAll": true,
-        "label": "rev",
-        "multi": false,
-        "name": "rev_search",
-        "options": [],
-        "query": "SELECT DISTINCT revision_origin_id FROM kernelci.kernelci01.builds WHERE architecture LIKE ${arch_search} AND origin_id LIKE ${origin_search} AND UNIX_MILLIS(start_time) BETWEEN ${__from} AND ${__to}",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
         "current": {
           "value": "${VAR_DB_NAME}",
           "text": "${VAR_DB_NAME}"
@@ -763,6 +697,72 @@
         "query": "${VAR_DB_NAME}",
         "skipUrlSync": false,
         "type": "constant"
+      },
+      {
+        "allValue": "\"%\"",
+        "current": {},
+        "datasource": "${DS_GOOGLE_BIGQUERY}",
+        "definition": "SELECT architecture FROM ${DB_NAME}.builds",
+        "hide": 0,
+        "includeAll": true,
+        "label": "arch",
+        "multi": false,
+        "name": "arch_search",
+        "options": [],
+        "query": "SELECT architecture FROM ${DB_NAME}.builds",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": "\"%\"",
+        "current": {},
+        "datasource": "${DS_GOOGLE_BIGQUERY}",
+        "definition": "SELECT origin FROM ${DB_NAME}.builds",
+        "hide": 0,
+        "includeAll": true,
+        "label": "origin",
+        "multi": false,
+        "name": "origin_search",
+        "options": [],
+        "query": "SELECT origin FROM ${DB_NAME}.builds",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": "\"%\"",
+        "current": {},
+        "datasource": "${DS_GOOGLE_BIGQUERY}",
+        "definition": "SELECT DISTINCT revision_origin_id FROM ${DB_NAME}.builds WHERE architecture LIKE ${arch_search} AND origin_id LIKE ${origin_search} AND UNIX_MILLIS(start_time) BETWEEN ${__from} AND ${__to}",
+        "hide": 0,
+        "includeAll": true,
+        "label": "rev",
+        "multi": false,
+        "name": "rev_search",
+        "options": [],
+        "query": "SELECT DISTINCT revision_origin_id FROM ${DB_NAME}.builds WHERE architecture LIKE ${arch_search} AND origin_id LIKE ${origin_search} AND UNIX_MILLIS(start_time) BETWEEN ${__from} AND ${__to}",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
       }
     ]
   },
@@ -787,5 +787,5 @@
   "timezone": "",
   "title": "Builds",
   "uid": "cLgihIoZz",
-  "version": 77
+  "version": 80
 }
