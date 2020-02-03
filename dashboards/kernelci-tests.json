@@ -12,7 +12,14 @@
       "name": "VAR_REV",
       "type": "constant",
       "label": "rev",
-      "value": "",
+      "value": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git@05ef8b97ddf9aed40df977477daeab01760d7f9a",
+      "description": ""
+    },
+    {
+      "name": "VAR_DB_NAME",
+      "type": "constant",
+      "label": "DB_NAME",
+      "value": "kernelci.kernelci02",
       "description": ""
     }
   ],
@@ -77,7 +84,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1579770518317,
+  "iteration": 1580738879843,
   "links": [
     {
       "icon": "external link",
@@ -107,7 +114,10 @@
         {
           "format": "time_series",
           "group": [],
+          "location": "US",
           "metricColumn": "none",
+          "orderByCol": "1",
+          "orderBySort": "1",
           "rawQuery": false,
           "rawSql": "SELECT\n  time_column,\n  value1\nFROM\n  metric_table\nWHERE\n  $__timeFilter(time_column)\n",
           "refId": "A",
@@ -237,7 +247,7 @@
           "orderByCol": "1",
           "orderBySort": "1",
           "rawQuery": true,
-          "rawSql": "SELECT DISTINCT\n  origin_id,\n  description,\n  architecture,\n  compiler,\n  duration,\n  valid,\n  log_url\nFROM\n  kernelci.kernelci01.builds\nWHERE\n  revision_origin_id = '${rev}'\nAND architecture LIKE ${arch_search}\nAND (compiler LIKE ${compiler_search})\n",
+          "rawSql": "SELECT DISTINCT\n  origin_id,\n  description,\n  architecture,\n  compiler,\n  duration,\n  valid,\n  log_url\nFROM\n  ${DB_NAME}.builds\nWHERE\n  revision_origin_id = '${rev}'\nAND architecture LIKE ${arch_search}\nAND (compiler LIKE ${compiler_search})\n",
           "refId": "A",
           "select": [
             [
@@ -307,9 +317,12 @@
         {
           "format": "table",
           "group": [],
+          "location": "US",
           "metricColumn": "none",
+          "orderByCol": "1",
+          "orderBySort": "1",
           "rawQuery": true,
-          "rawSql": "SELECT COUNT (status) FROM `kernelci.kernelci01.tests` WHERE status='PASS' AND build_origin_id= '${build}'\n",
+          "rawSql": "SELECT COUNT (status) FROM `${DB_NAME}.tests` WHERE status='PASS' AND build_origin_id= '${build}'\n",
           "refId": "A",
           "select": [
             [
@@ -406,9 +419,12 @@
         {
           "format": "table",
           "group": [],
+          "location": "US",
           "metricColumn": "none",
+          "orderByCol": "1",
+          "orderBySort": "1",
           "rawQuery": true,
-          "rawSql": "SELECT COUNT(status) FROM `kernelci.kernelci01.tests` WHERE build_origin_id='${build}'",
+          "rawSql": "SELECT COUNT(status) FROM `${DB_NAME}.tests` WHERE build_origin_id='${build}'",
           "refId": "A",
           "select": [
             [
@@ -493,9 +509,12 @@
         {
           "format": "table",
           "group": [],
+          "location": "US",
           "metricColumn": "none",
+          "orderByCol": "1",
+          "orderBySort": "1",
           "rawQuery": true,
-          "rawSql": "SELECT COUNT(status) / (SELECT COUNT(status) FROM `kernelci.kernelci01.tests` WHERE build_origin_id='${build}') FROM `kernelci.kernelci01.tests` WHERE build_origin_id='${build}' AND status='PASS'\n",
+          "rawSql": "SELECT COUNT(status) / (SELECT COUNT(status) FROM `${DB_NAME}.tests` WHERE build_origin_id='${build}') FROM `kernelci.kernelci01.tests` WHERE build_origin_id='${build}' AND status='PASS'\n",
           "refId": "A",
           "select": [
             [
@@ -564,9 +583,12 @@
         {
           "format": "table",
           "group": [],
+          "location": "US",
           "metricColumn": "none",
+          "orderByCol": "1",
+          "orderBySort": "1",
           "rawQuery": true,
-          "rawSql": "SELECT COUNT (status) FROM `kernelci.kernelci01.tests` WHERE status='FAIL' AND build_origin_id='${build}'\n",
+          "rawSql": "SELECT COUNT (status) FROM `${DB_NAME}.tests` WHERE status='FAIL' AND build_origin_id='${build}'\n",
           "refId": "A",
           "select": [
             [
@@ -635,9 +657,12 @@
         {
           "format": "table",
           "group": [],
+          "location": "US",
           "metricColumn": "none",
+          "orderByCol": "1",
+          "orderBySort": "1",
           "rawQuery": true,
-          "rawSql": "SELECT COUNT (status) FROM `kernelci.kernelci01.tests` WHERE status='SKIP' AND build_origin_id='5d5d205a59b514cb8af1223e'\n",
+          "rawSql": "SELECT COUNT (status) FROM `${DB_NAME}.tests` WHERE status='SKIP' AND build_origin_id='5d5d205a59b514cb8af1223e'\n",
           "refId": "A",
           "select": [
             [
@@ -748,7 +773,7 @@
           "orderByCol": "1",
           "orderBySort": "1",
           "rawQuery": true,
-          "rawSql": "SELECT start_time, description, path, status FROM `kernelci.kernelci01.tests` WHERE build_origin_id='${build}' AND status LIKE ${status_search} LIMIT 1000\n",
+          "rawSql": "SELECT start_time, description, path, status FROM `${DB_NAME}.tests` WHERE build_origin_id='${build}' AND status LIKE ${status_search} LIMIT 1000\n",
           "refId": "A",
           "select": [
             [
@@ -910,6 +935,24 @@
         "query": "PASS,FAIL,SKIP,ERROR",
         "skipUrlSync": false,
         "type": "custom"
+      },
+      {
+        "current": {
+          "value": "${VAR_DB_NAME}",
+          "text": "${VAR_DB_NAME}"
+        },
+        "hide": 2,
+        "label": null,
+        "name": "DB_NAME",
+        "options": [
+          {
+            "value": "${VAR_DB_NAME}",
+            "text": "${VAR_DB_NAME}"
+          }
+        ],
+        "query": "${VAR_DB_NAME}",
+        "skipUrlSync": false,
+        "type": "constant"
       }
     ]
   },
@@ -934,5 +977,5 @@
   "timezone": "",
   "title": "Tests",
   "uid": "BI2us1oZk",
-  "version": 94
+  "version": 99
 }
