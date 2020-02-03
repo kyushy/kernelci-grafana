@@ -23,3 +23,11 @@ You might need to reset the current one to be able to add yours.
 
 ### Configure the organisation
 Go to http://your-container-url:3000/admin/orgs and add a new organisation `kernelci`
+
+### Save/Restore your instance
+#### Save
+https://github.com/rocker-org/rocker/wiki/How-to-save-data
+#### Restore
+If your image is saved on dockerhub  
+`docker pull username/imagename`
+If your image is saved on your machine with docker commit, just run the image with the new name used for docker commit
