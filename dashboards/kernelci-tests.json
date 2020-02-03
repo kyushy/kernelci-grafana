@@ -9,17 +9,17 @@
       "pluginName": "Google BigQuery"
     },
     {
-      "name": "VAR_REV",
-      "type": "constant",
-      "label": "rev",
-      "value": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git@05ef8b97ddf9aed40df977477daeab01760d7f9a",
-      "description": ""
-    },
-    {
       "name": "VAR_DB_NAME",
       "type": "constant",
       "label": "DB_NAME",
       "value": "kernelci.kernelci02",
+      "description": ""
+    },
+    {
+      "name": "VAR_REV",
+      "type": "constant",
+      "label": "rev",
+      "value": "staging.kernelci.org:staging-20200131.0",
       "description": ""
     }
   ],
@@ -84,7 +84,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1580738879843,
+  "iteration": 1580739994930,
   "links": [
     {
       "icon": "external link",
@@ -514,7 +514,7 @@
           "orderByCol": "1",
           "orderBySort": "1",
           "rawQuery": true,
-          "rawSql": "SELECT COUNT(status) / (SELECT COUNT(status) FROM `${DB_NAME}.tests` WHERE build_origin_id='${build}') FROM `kernelci.kernelci01.tests` WHERE build_origin_id='${build}' AND status='PASS'\n",
+          "rawSql": "SELECT COUNT(status) / (SELECT COUNT(status) FROM `${DB_NAME}.tests` WHERE build_origin_id='${build}') FROM `${DB_NAME}.tests` WHERE build_origin_id='${build}' AND status='PASS'\n",
           "refId": "A",
           "select": [
             [
@@ -811,6 +811,24 @@
     "list": [
       {
         "current": {
+          "value": "${VAR_DB_NAME}",
+          "text": "${VAR_DB_NAME}"
+        },
+        "hide": 2,
+        "label": null,
+        "name": "DB_NAME",
+        "options": [
+          {
+            "value": "${VAR_DB_NAME}",
+            "text": "${VAR_DB_NAME}"
+          }
+        ],
+        "query": "${VAR_DB_NAME}",
+        "skipUrlSync": false,
+        "type": "constant"
+      },
+      {
+        "current": {
           "value": "${VAR_REV}",
           "text": "${VAR_REV}"
         },
@@ -831,14 +849,14 @@
         "allValue": "\"%\"",
         "current": {},
         "datasource": "${DS_GOOGLE_BIGQUERY}",
-        "definition": "SELECT architecture FROM kernelci.kernelci01.builds WHERE revision_origin_id = '${rev}'",
+        "definition": "SELECT architecture FROM ${DB_NAME}.builds WHERE revision_origin_id = '${rev}'",
         "hide": 0,
         "includeAll": true,
         "label": "arch",
         "multi": false,
         "name": "arch_search",
         "options": [],
-        "query": "SELECT architecture FROM kernelci.kernelci01.builds WHERE revision_origin_id = '${rev}'",
+        "query": "SELECT architecture FROM ${DB_NAME}.builds WHERE revision_origin_id = '${rev}'",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -853,14 +871,14 @@
         "allValue": "\"%\" OR compiler IS NULL",
         "current": {},
         "datasource": "${DS_GOOGLE_BIGQUERY}",
-        "definition": "SELECT compiler FROM kernelci.kernelci01.builds WHERE revision_origin_id = '${rev}'",
+        "definition": "SELECT compiler FROM ${DB_NAME}.builds WHERE revision_origin_id = '${rev}'",
         "hide": 0,
         "includeAll": true,
         "label": "compiler",
         "multi": false,
         "name": "compiler_search",
         "options": [],
-        "query": "SELECT compiler FROM kernelci.kernelci01.builds WHERE revision_origin_id = '${rev}'",
+        "query": "SELECT compiler FROM ${DB_NAME}.builds WHERE revision_origin_id = '${rev}'",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -875,14 +893,14 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_GOOGLE_BIGQUERY}",
-        "definition": "SELECT origin_id FROM   kernelci.kernelci01.builds WHERE   revision_origin_id = '${rev}' AND architecture LIKE ${arch_search} AND (compiler LIKE ${compiler_search})",
+        "definition": "SELECT origin_id FROM  ${DB_NAME}.builds WHERE   revision_origin_id = '${rev}' AND architecture LIKE ${arch_search} AND (compiler LIKE ${compiler_search})",
         "hide": 0,
         "includeAll": false,
         "label": "",
         "multi": false,
         "name": "build",
         "options": [],
-        "query": "SELECT origin_id FROM   kernelci.kernelci01.builds WHERE   revision_origin_id = '${rev}' AND architecture LIKE ${arch_search} AND (compiler LIKE ${compiler_search})",
+        "query": "SELECT origin_id FROM  ${DB_NAME}.builds WHERE   revision_origin_id = '${rev}' AND architecture LIKE ${arch_search} AND (compiler LIKE ${compiler_search})",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -897,8 +915,8 @@
         "allValue": "\"%\"",
         "current": {
           "tags": [],
-          "text": "FAIL",
-          "value": "FAIL"
+          "text": "All",
+          "value": "$__all"
         },
         "hide": 0,
         "includeAll": true,
@@ -907,7 +925,7 @@
         "name": "status_search",
         "options": [
           {
-            "selected": false,
+            "selected": true,
             "text": "All",
             "value": "$__all"
           },
@@ -917,7 +935,7 @@
             "value": "PASS"
           },
           {
-            "selected": true,
+            "selected": false,
             "text": "FAIL",
             "value": "FAIL"
           },
@@ -935,24 +953,6 @@
         "query": "PASS,FAIL,SKIP,ERROR",
         "skipUrlSync": false,
         "type": "custom"
-      },
-      {
-        "current": {
-          "value": "${VAR_DB_NAME}",
-          "text": "${VAR_DB_NAME}"
-        },
-        "hide": 2,
-        "label": null,
-        "name": "DB_NAME",
-        "options": [
-          {
-            "value": "${VAR_DB_NAME}",
-            "text": "${VAR_DB_NAME}"
-          }
-        ],
-        "query": "${VAR_DB_NAME}",
-        "skipUrlSync": false,
-        "type": "constant"
       }
     ]
   },
@@ -977,5 +977,5 @@
   "timezone": "",
   "title": "Tests",
   "uid": "BI2us1oZk",
-  "version": 99
+  "version": 101
 }
