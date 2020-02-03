@@ -7,6 +7,13 @@
       "type": "datasource",
       "pluginId": "doitintl-bigquery-datasource",
       "pluginName": "Google BigQuery"
+    },
+    {
+      "name": "VAR_DB_NAME",
+      "type": "constant",
+      "label": "DB_NAME",
+      "value": "kernelci.kernelci02",
+      "description": ""
     }
   ],
   "__requires": [
@@ -64,7 +71,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1579770210492,
+  "iteration": 1580739140206,
   "links": [],
   "panels": [
     {
@@ -133,9 +140,12 @@
         {
           "format": "table",
           "group": [],
+          "location": "US",
           "metricColumn": "none",
+          "orderByCol": "1",
+          "orderBySort": "1",
           "rawQuery": true,
-          "rawSql": "SELECT COUNT (revision_origin_id) \nFROM `kernelci.kernelci01.builds` \nWHERE architecture LIKE ${arch_search} AND origin LIKE ${origin_search} AND revision_origin_id LIKE ${rev_search} AND UNIX_MILLIS(start_time) BETWEEN ${__from} AND ${__to}\n",
+          "rawSql": "SELECT COUNT (revision_origin_id) \nFROM `${DB_NAME}.builds` \nWHERE architecture LIKE ${arch_search} AND origin LIKE ${origin_search} AND revision_origin_id LIKE ${rev_search} AND UNIX_MILLIS(start_time) BETWEEN ${__from} AND ${__to}\n",
           "refId": "A",
           "select": [
             [
@@ -220,9 +230,12 @@
         {
           "format": "table",
           "group": [],
+          "location": "US",
           "metricColumn": "none",
+          "orderByCol": "1",
+          "orderBySort": "1",
           "rawQuery": true,
-          "rawSql": "SELECT COUNT (revision_origin_id) / \n  (SELECT COUNT (revision_origin_id) \n  FROM `kernelci.kernelci01.builds` \n  WHERE architecture LIKE ${arch_search} AND origin LIKE ${origin_search} AND UNIX_MILLIS(start_time) BETWEEN ${__from} AND ${__to} ) \nFROM `kernelci.kernelci01.builds` \nWHERE valid=true AND architecture LIKE ${arch_search} AND origin LIKE ${origin_search} AND revision_origin_id LIKE ${rev_search} AND UNIX_MILLIS(start_time) BETWEEN ${__from} AND ${__to}\n",
+          "rawSql": "SELECT COUNT (revision_origin_id) / \n  (SELECT COUNT (revision_origin_id) \n  FROM `${DB_NAME}.builds` \n  WHERE architecture LIKE ${arch_search} AND origin LIKE ${origin_search} AND UNIX_MILLIS(start_time) BETWEEN ${__from} AND ${__to} ) \nFROM `${DB_NAME}.builds` \nWHERE valid=true AND architecture LIKE ${arch_search} AND origin LIKE ${origin_search} AND revision_origin_id LIKE ${rev_search} AND UNIX_MILLIS(start_time) BETWEEN ${__from} AND ${__to}\n",
           "refId": "A",
           "select": [
             [
@@ -298,7 +311,7 @@
           "orderByCol": "1",
           "orderBySort": "1",
           "rawQuery": true,
-          "rawSql": "#standardSQL\r\nSELECT\r\n TIMESTAMP_SECONDS(DIV(UNIX_SECONDS(`start_time`), 10800) * 10800),\r\n  CAST (`architecture`AS String ) AS metric,\r\n  count(`architecture`) AS architecture\r\nFROM `kernelci.kernelci01.builds`\r\nWHERE\r\n  UNIX_MILLIS(`start_time`) BETWEEN ${__from} AND ${__to}\r\nAND origin LIKE ${origin_search}\r\nAND revision_origin_id LIKE ${rev_search}\r\nGROUP BY 1,2\r\nORDER BY 1,2 LIMIT 797",
+          "rawSql": "#standardSQL\r\nSELECT\r\n TIMESTAMP_SECONDS(DIV(UNIX_SECONDS(`start_time`), 10800) * 10800),\r\n  CAST (`architecture`AS String ) AS metric,\r\n  count(`architecture`) AS architecture\r\nFROM `${DB_NAME}.builds`\r\nWHERE\r\n  UNIX_MILLIS(`start_time`) BETWEEN ${__from} AND ${__to}\r\nAND origin LIKE ${origin_search}\r\nAND revision_origin_id LIKE ${rev_search}\r\nGROUP BY 1,2\r\nORDER BY 1,2 LIMIT 797",
           "refId": "A",
           "select": [
             [
@@ -408,9 +421,12 @@
         {
           "format": "time_series",
           "group": [],
+          "location": "US",
           "metricColumn": "none",
+          "orderByCol": "1",
+          "orderBySort": "1",
           "rawQuery": true,
-          "rawSql": "#standardSQL\r\nSELECT\r\n TIMESTAMP_SECONDS(DIV(UNIX_SECONDS(`start_time`), 10800) * 10800),\r\n  CAST (`revision_origin_id`AS String ) AS metric,\r\n  count(`revision_origin_id`) AS architecture\r\nFROM `kernelci.kernelci01.builds`\r\nWHERE architecture LIKE ${arch_search} AND UNIX_MILLIS(`start_time`) BETWEEN ${__from} AND ${__to}\r\nAND origin LIKE ${origin_search}\r\nGROUP BY 1,2\r\nORDER BY 1,2 LIMIT 797",
+          "rawSql": "#standardSQL\r\nSELECT\r\n TIMESTAMP_SECONDS(DIV(UNIX_SECONDS(`start_time`), 10800) * 10800),\r\n  CAST (`revision_origin_id`AS String ) AS metric,\r\n  count(`revision_origin_id`) AS architecture\r\nFROM `${DB_NAME}.builds`\r\nWHERE architecture LIKE ${arch_search} AND UNIX_MILLIS(`start_time`) BETWEEN ${__from} AND ${__to}\r\nAND origin LIKE ${origin_search}\r\nGROUP BY 1,2\r\nORDER BY 1,2 LIMIT 797",
           "refId": "A",
           "select": [
             [
@@ -627,7 +643,7 @@
           "orderByCol": "1",
           "orderBySort": "1",
           "rawQuery": true,
-          "rawSql": "SELECT revision_origin_id, origin, architecture, MAX(start_time), COUNT(valid), COUNT(CASE WHEN valid THEN 1 END), COUNT(CASE WHEN NOT valid THEN 1 END), ARRAY_AGG(origin_id LIMIT 150)[OFFSET(0)]  \nFROM `kernelci.kernelci01.builds` \nWHERE architecture LIKE ${arch_search} AND origin LIKE ${origin_search} AND revision_origin_id LIKE ${rev_search} AND UNIX_MILLIS(start_time) BETWEEN ${__from} AND ${__to}\nGROUP BY revision_origin_id, architecture, origin ",
+          "rawSql": "SELECT revision_origin_id, origin, architecture, MAX(start_time), COUNT(valid), COUNT(CASE WHEN valid THEN 1 END), COUNT(CASE WHEN NOT valid THEN 1 END), ARRAY_AGG(origin_id LIMIT 150)[OFFSET(0)]  \nFROM `${DB_NAME}.builds` \nWHERE architecture LIKE ${arch_search} AND origin LIKE ${origin_search} AND revision_origin_id LIKE ${rev_search} AND UNIX_MILLIS(start_time) BETWEEN ${__from} AND ${__to}\nGROUP BY revision_origin_id, architecture, origin ",
           "refId": "A",
           "select": [
             [
@@ -729,6 +745,24 @@
         "tagsQuery": "",
         "type": "query",
         "useTags": false
+      },
+      {
+        "current": {
+          "value": "${VAR_DB_NAME}",
+          "text": "${VAR_DB_NAME}"
+        },
+        "hide": 2,
+        "label": null,
+        "name": "DB_NAME",
+        "options": [
+          {
+            "value": "${VAR_DB_NAME}",
+            "text": "${VAR_DB_NAME}"
+          }
+        ],
+        "query": "${VAR_DB_NAME}",
+        "skipUrlSync": false,
+        "type": "constant"
       }
     ]
   },
@@ -753,5 +787,5 @@
   "timezone": "",
   "title": "Builds",
   "uid": "cLgihIoZz",
-  "version": 72
+  "version": 77
 }
