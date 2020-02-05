@@ -21,6 +21,9 @@ Default login and password: `admin / admin`
 Once your container started, go to http://your-container-url:3000/datasources/edit/1/ and add your account key.  
 You might need to reset the current one to be able to add yours.  
 
+If you have the following error, `Datasource named ${DS_GOOGLE_BIGQUERY} was not found`  
+Delete the datasource and recreate a new one.
+
 ### Configure the organisation
 Go to http://your-container-url:3000/admin/orgs and add a new organisation `kernelci`
 
