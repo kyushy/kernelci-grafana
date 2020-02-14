@@ -18,14 +18,20 @@ docker run \
 Default login and password: `admin / admin`
 
 ### Configure the datasource
-Once your container started, go to http://your-container-url:3000/datasources/edit/1/ and add your account key.  
-You might need to reset the current one to be able to add yours.  
+Once your container started, go to http://your-container-url:3000/datasources/ and create a new datasource.
+Choose BigQuery and add your json key file.
 
-If you have the following error, `Datasource named ${DS_GOOGLE_BIGQUERY} was not found`  
-Delete the datasource and create a new one.
 
-### Configure the organisation
-Go to http://your-container-url:3000/admin/orgs and add a new organisation `kernelci`
+### Import dashboards
+Go to http://your-container-url:3000/dashboards and click on `Import`
+Copy the json file in `kernelci-grafana/dashboard/`.  
+Select the Google BigQuery datasource and import.
+Repeat this step for every dashboard.  
+
+### Export your dashboards
+The export feature is accessed in the share window which you open by clicking the share button in the dashboard menu.  
+Click the checkbox for sharing for external use and save the json file.
+
 
 ### Save/Restore your instance
 #### Save
