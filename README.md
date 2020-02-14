@@ -23,7 +23,7 @@ Choose BigQuery and add your json key file.
 
 
 ### Import dashboards
-Go to http://your-container-url:3000/dashboards and click on `Import`
+Go to http://your-container-url:3000/dashboards and click on `Import`  
 Copy or upload the json file in `kernelci-grafana/dashboard/`.  
 Select the Google BigQuery datasource and import.  
 Repeat this step for every dashboard.  
