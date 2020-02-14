@@ -30,7 +30,7 @@ Repeat this step for every dashboard.
 
 ### Export your dashboards
 The export feature is accessed in the share window which you open by clicking the share button in the dashboard menu.  
-Click the checkbox for sharing for external use and save the json file.
+Click the checkbox for sharing for external use and save the json file in the dashboard folder.
 
 
 ### Save/Restore your instance
